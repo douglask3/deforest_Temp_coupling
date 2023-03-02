@@ -16,9 +16,9 @@ def run_regression(xs, ys):
         # Define priors
         epsilon = pm.LogNormal("epsilon", 0, 10)
         y0 = pm.Normal("y0", np.mean(ys), sigma=np.std(ys))
-        beta = pm.Exponential("beta", (np.max(xs) - np.min(xs))/(np.max(ys) - np.min(ys)))
+        beta = pm.Normal("beta", 0, (np.max(ys) - np.min(ys))/(np.max(xs) - np.min(xs)))
 
-        prediction = y0 - beta * xs
+        prediction = y0 + beta * xs
         
         # Define likelihood
         likelihood = pm.Normal("mod", mu=prediction, sigma=epsilon, observed=ys)
